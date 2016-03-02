@@ -12,7 +12,11 @@ class Item
               :merchant_id
 
   def initialize(hash)
+<<<<<<< HEAD
     @id = hash[:id].to_i
+=======
+    @id = hash[:id]
+>>>>>>> 81351c4f2966a11c9194ec1f25c58ed328cac9e6
     @name = hash[:name]
     @description = hash[:description]
     @unit_price = hash[:unit_price]

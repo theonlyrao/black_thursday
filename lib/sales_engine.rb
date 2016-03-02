@@ -18,11 +18,19 @@ class SalesEngine
   end
 
   def items
+<<<<<<< HEAD
     Items.new(@items)
   end
 
   def merchants
     Merchants.new(@merchants)
+=======
+    @items
+  end
+
+  def merchants
+    @merchants
+>>>>>>> 81351c4f2966a11c9194ec1f25c58ed328cac9e6
   end
 
   def self.item_instance_maker(items_filepath)
