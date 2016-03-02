@@ -1,16 +1,31 @@
 require 'pry'
 require 'csv'
+require_relative 'merchant'
+require_relative 'item'
 
 class SalesEngine
 
-  def from_csv(hash)
-    items_array = items_array_maker(hash[:items])
-    merchants_array = merchants_array_maker(hash[:merchants])
-    sales_engine_hash = {:items => items_array,
-                         :merchants => merchants_array}
+  def initialize(hash)
+    @items = hash[:items]
+    @merchants = hash[:merchants]
   end
 
-  def items_array_maker(items_filepath)
+  def self.from_csv(hash)
+    items_array = item_instance_maker(hash[:items])
+    merchants_array = merchant_instance_maker(hash[:merchants])
+    hash = {:items => items_array, :merchants => merchants_array}
+    SalesEngine.new(hash)
+  end
+
+  def items
+    Items.new(@items)
+  end
+
+  def merchants
+    Merchants.new(@merchants)
+  end
+
+  def self.item_instance_maker(items_filepath)
     contents = CSV.open items_filepath, headers: true, header_converters: :symbol
     items = []
     contents.each do |row|
@@ -22,12 +37,12 @@ class SalesEngine
       hash[:merchant_id] = row[:merchant_id]
       hash[:created_at] = row[:created_at]
       hash[:updated_at] = row[:updated_at]
-      items << hash
+      items << Item.new(hash)
     end
     items
   end
 
-  def merchants_array_maker(merchants_filepath)
+  def self.merchant_instance_maker(merchants_filepath)
     contents = CSV.open merchants_filepath, headers: true, header_converters: :symbol
     merchants = []
     contents.each do |row|
@@ -36,7 +51,7 @@ class SalesEngine
       hash[:name] = row[:name]
       hash[:created_at] = row[:created_at]
       hash[:updated_at] = row[:updated_at]
-      merchants << hash
+      merchants << Merchant.new(hash)
     end
     merchants
   end
