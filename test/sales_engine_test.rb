@@ -12,30 +12,32 @@ class SalesEngineTest < Minitest::Test
                           :merchants => "./data/merchants.csv"})
   end
 
-#test:parameter acceptance
   def test_from_csv_has_array_as_output
     assert_equal Hash, @result.class
   end
 
-#test:parsing/return values
   def test_can_get_item_names_and_merchant_names
-  #test to verify item name -> result[:items][:names] = [array of names]
-  #test to verify merchant name
-  item_array = @result[:items]
-  merchant_array = @result[:merchants] 
+    item_names_array = @result[:items].map do |hash|
+      hash[:name]
+    end
+    merchant_names_array = @result[:merchants].map do |hash|
+      hash[:name]
+    end
 
-  assert_equal [], item_array
-  assert_equal [], merchant_array
+    assert_equal "Minty Green Knit Crochet Infinity Scarf", item_names_array.last
+    assert_equal "CJsDecor", merchant_names_array.last
   end
 
   def test_from_csv_outputs_item_ids_and_merchant_ids
-  #test to verify item id
-  #test to verify merchant id
+    item_ids_array = @result[:items].map do |hash|
+      hash[:id]
+    end
+    merchant_ids_array = @result[:merchants].map do |hash|
+      hash[:id]
+    end
+
+    assert_equal "263567474", item_ids_array.last
+    assert_equal "12337411", merchant_ids_array.last
   end
-
-
-
-
-
 
 end
