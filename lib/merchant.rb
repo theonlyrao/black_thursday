@@ -13,6 +13,15 @@ class Merchant
   end
 
   def items
+    # relying too heavily on accessing all these behaviors at the class level
+    # what connections are necessary in order for a single merchant to be able to
+    # request all the items with its id
+
+    # SalesEngine.items_for_merchant_id(self.id) => [Item1, Item2, Item3]
+    # |
+    # |
+    # v
+    # <Some Sales Engine Instance>.items_for_merchant_id(self.id)
     SalesEngine.push_to_merchant_searcher(self.id)
     Merchant.items_being_sold
   end
