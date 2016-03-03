@@ -4,10 +4,6 @@ class ItemRepository
     @items = array_of_item_objects
   end
 
-  def inspect
-    "ItemRepo with #{@items.count} Items"
-  end
-
   def all
     @items
   end
