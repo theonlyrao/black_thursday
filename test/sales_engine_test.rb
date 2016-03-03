@@ -7,8 +7,8 @@ class SalesEngineTest < Minitest::Test
 
 
   def setup
-    @result = SalesEngine.from_csv({:items     => "../data/items.csv",
-                          :merchants => "../data/merchants.csv"})
+    @result = SalesEngine.from_csv({:items     => "./data/items.csv",
+                          :merchants => "./data/merchants.csv"})
   end
 
   def test_from_csv_has_array_as_output
