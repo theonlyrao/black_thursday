@@ -24,8 +24,8 @@ class MerchantTest < Minitest::Test
 
   def test_can_look_up_a_merchants_items
     se = SalesEngine.from_csv({
-      :items     => "./data/items.csv",
-      :merchants => "./data/merchants.csv",
+      :items     => "../data/items.csv",
+      :merchants => "../data/merchants.csv",
     })
     merchant = se.merchants.find_by_id(12335747)
     merchant_items = merchant.items

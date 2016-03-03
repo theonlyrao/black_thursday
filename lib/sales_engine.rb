@@ -9,9 +9,26 @@ class SalesEngine
 
   attr_reader :sales_engine_hash
 
+  # SalesEngine.new
+  # in initialize, `self` will be that new SE that was just created
+
   def initialize(hash)
+    # instead of storing just items and merchants, can i store the actual repositories
+    # then whenever you ask me sales_engine.items i can give you the one i stored before instead
+    # of having to make a new one
+
+
     @items = hash[:items]
     @merchants = hash[:merchants]
+
+    @item_repo = ItemRepository.new(@items)
+    # making new merchant repo -- give it the merchants
+    # but also give it something that allows it to connect to Item information
+
+
+    @merchant_repo = MerchantRepository.new(@merchants)
+    # @merchant_repo = MerchantRepository.new(@merchants, self)
+    # @merchant_repo = MerchantRepository.new(@merchants, item_repo)
   end
 
   def self.from_csv(hash)
