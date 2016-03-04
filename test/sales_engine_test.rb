@@ -3,38 +3,31 @@ require 'minitest/pride'
 require 'pry'
 require_relative "../lib/sales_engine"
 
+
 class SalesEngineTest < Minitest::Test
 
-
   def setup
-    @result = SalesEngine.from_csv({:items     => "../data/items.csv",
-                          :merchants => "../data/merchants.csv"})
+    @se = SalesEngine.from_csv({:items     => "../data/fixtures/item_stub.csv",
+                                :merchants => "../data/merchants.csv"})
+# binding.pry
   end
 
-  def test_from_csv_has_array_as_output
-    assert_equal SalesEngine, @result.class
+  def test_from_csv_returns_SalesEngine_with_csv_object
+    assert_equal SalesEngine, @se.class
+    assert_equal CSV, @se.csvs[:items].class
+    #initialize sales engine with csv content then create an instance variable that contains content
   end
 
-  def test_sales_engine_hash_contains_item_and_merchant_instances
-    assert_equal ItemRepository, @result.items.class
-    assert_equal MerchantRepository, @result.merchants.class
+  def test_items_returns_instance_of_ItemRepository
+    assert_equal ItemRepository, @se.items.class
   end
 
-  # def test_from_csv_outputs_item_ids_and_merchant_ids
-  #   assert_equal "263567474", @result.items.id
-  #   assert_equal "12337411", @result.merchants.id
-  # end
-
-  # def test_calling_merchants_creates_merchant_repo
-  #   mr = @result.merchants
-  #
-  #   assert_equal MerchantRepository, mr.class
-  # end
-  def test_array_has_a_merchants_array
-  end
-  def test_has_a_merchant_array
+  def test_magic_returns_an_array_populated_with_item_instances
+    assert_equal "ItemRepo with 256 Items", @se.items.inspect
   end
 
+  def test_merchants_returns_instance_of_MerchantRepository_with_merchant_instances_loaded
 
-#stub a csv/have a smaller csv to actually test
+  end
+
 end
