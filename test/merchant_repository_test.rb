@@ -39,5 +39,5 @@ class MerchantRepositoryTest < Minitest::Test
   def test_find_all_by_name_returns_one_plus_matches_that_contain_fragment
     assert_equal 2, @merchant_repository.find_all_by_name("l").count
   end
-#more testS? CHECK SENSITIVITY
+
 end

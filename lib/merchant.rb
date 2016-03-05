@@ -6,20 +6,13 @@ class Merchant
 
   attr_reader :id, :name
 
-  def initialize(hash)
+  def initialize(hash, sales_engine_instance = nil)
     @id = hash[:id].to_i
     @name = hash[:name]
+    @sales_engine_instance = sales_engine_instance
   end
 
   def items
-    # relying too heavily on accessing all these behaviors at the class level
-    # what connections are necessary in order for a single merchant to be able to
-    # request all the items with its id
-
-    # SalesEngine.items_for_merchant_id(self.id) => [Item1, Item2, Item3]
-    # |
-    # |
-    # v
-    # <Some Sales Engine Instance>.items_for_merchant_id(self.id)
+    @sales_engine_instance.items.find_all_by_merchant_id(self.id)
   end
 end

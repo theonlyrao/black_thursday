@@ -1,11 +1,18 @@
 class MerchantRepository
 
-  def initialize(merchant_array)
-    @merchants = merchant_array
+  def initialize(merchant_array, sales_engine_instance = nil)
+    @merchants = create_merchants(merchant_array, sales_engine_instance)
+    @sales_engine_instance = sales_engine_instance
   end
 
   def inspect
     "MerchantRepo with #{@merchants.count} Merchants"
+  end
+
+  def create_merchants(merchant_array, sales_engine_instance)
+    merchant_array.map do |hash_of_merchant_info|
+      Merchant.new(hash_of_merchant_info, sales_engine_instance)
+    end
   end
 
   def all
