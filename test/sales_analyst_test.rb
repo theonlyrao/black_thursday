@@ -44,7 +44,25 @@ class SalesAnalystTest < Minitest::Test
   def test_analyst_knows_avg_price_of_items_across_all_merchants
     sa = SalesAnalyst.new(@se)
 
-    assert_equal BigDecimal.new(1200,4), sa.average_average_price_per_merchant
+    assert_equal BigDecimal.new(258.46,6), sa.average_average_price_per_merchant
+  end
+
+  def test_analyst_knows_avg_price_per_item
+    sa = SalesAnalyst.new(@se)
+
+    assert_equal 574.547890625, sa.average_price_per_item
+  end
+
+  def test_analyst_knows_st_dev_of_avg_prices_per_item
+    sa = SalesAnalyst.new(@se)
+
+    assert_equal 6250.0, sa.average_price_per_item_standard_deviation
+  end
+
+  def test_analyst_knows_golden_items
+    sa = SalesAnalyst.new(@se)
+
+    assert_equal 1, sa.golden_items.count
   end
 
 end
