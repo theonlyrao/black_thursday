@@ -1,6 +1,5 @@
 require 'pry'
 require_relative 'item_repository'
-require_relative 'items_by_merchant_searcher'
 require_relative 'sales_engine'
 
 class Merchant

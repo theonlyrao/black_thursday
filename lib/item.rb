@@ -15,10 +15,9 @@ class Item
     @id = hash[:id].to_i
     @name = hash[:name]
     @description = hash[:description]
-    @unit_price = hash[:unit_price]
-    ##make big decimal here
-    @created_at = hash[:created_at]
-    @updated_at = hash[:updated_at]
+    @unit_price = BigDecimal.new((hash[:unit_price].to_f)/100, 4)
+    @created_at = Time.parse(hash[:created_at])
+    @updated_at = Time.parse(hash[:updated_at])
     @merchant_id = hash[:merchant_id].to_i
   end
 

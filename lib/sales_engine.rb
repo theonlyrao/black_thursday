@@ -1,54 +1,61 @@
-require 'CSV'
-require_relative 'item_repository'
-require_relative 'item'
 require 'pry'
+require 'csv'
+require_relative 'merchant'
+require_relative 'item'
+require_relative 'item_repository'
+require_relative 'merchant_repository'
 
 class SalesEngine
 
-  attr_reader :csvs
-
-  def initialize(csvs)
-    @csvs = csvs
-    # right here we have a hash with csv objects
-    # we need to turn these csv objects into arrays of item and merchant instances
+  def initialize(hash)
+    @items = hash[:items]
+    @merchants = hash[:merchants]
   end
 
-  def self.from_csv(filepath_hash)
-#
-# (filepath_hash = {:items     => "../data/fixtures/item_stub.csv",
-#                   :merchants => "../data/merchants.csv"})
-
-    csv_content = {}
-    filepath_hash.each do |key, filepath|
-      csv_content[key] = pull_from_csv(filepath)
-    end
-    SalesEngine.new(csv_content)
-  end
-
-  def self.pull_from_csv(filepath)
-    content = CSV.open filepath, headers: true, header_converters: :symbol
-    #returns csv object
+  def self.from_csv(hash)
+    items_array = item_instance_maker(hash[:items])
+    merchants_array = merchant_instance_maker(hash[:merchants])
+    sales_engine_hash = {:items => items_array, :merchants => merchants_array}
+    SalesEngine.new(sales_engine_hash)
   end
 
   def items
-    item_array = magic_item_array_creator(@csvs[:items])
-    repo = ItemRepository.new(item_array)
+    ItemRepository.new(@items)
   end
 
-  def magic_item_array_creator(csv_object)
-    item_array = []
-    csv_object.each do |row|
-      hash = {}
+  def merchants
+    MerchantRepository.new(@merchants)
+  end
+
+  def self.item_instance_maker(items_filepath)
+    contents = CSV.open items_filepath, headers: true, header_converters: :symbol
+    items = []
+    contents.each do |row|
+      hash = Hash.new
       hash[:id] = row[:id]
       hash[:name] = row[:name]
       hash[:description] = row[:description]
       hash[:unit_price] = row[:unit_price]
+      hash[:merchant_id] = row[:merchant_id]
       hash[:created_at] = row[:created_at]
       hash[:updated_at] = row[:updated_at]
-      hash[:merchant_id] = row[:merchant_id]
-      item_array << Item.new(hash)
+      items << Item.new(hash)
     end
-    item_array
+    items
+  end
+
+  def self.merchant_instance_maker(merchants_filepath)
+    contents = CSV.open merchants_filepath, headers: true, header_converters: :symbol
+    merchants = []
+    contents.each do |row|
+      hash = Hash.new
+      hash[:id] = row[:id]
+      hash[:name] = row[:name]
+      hash[:created_at] = row[:created_at]
+      hash[:updated_at] = row[:updated_at]
+      merchants << Merchant.new(hash)
+    end
+    merchants
   end
 
 end
