@@ -3,6 +3,7 @@ require 'minitest/pride'
 require 'pry'
 require_relative '../lib/item'
 require 'bigdecimal'
+require_relative '../lib/sales_engine'
 
 class ItemTest < Minitest::Test
 
@@ -13,6 +14,7 @@ class ItemTest < Minitest::Test
         :unit_price  => BigDecimal.new(1099,4),
         :created_at  => Time.now.to_s,
         :updated_at  => Time.now.to_s,
+        :merchant_id => "234252"
       })
   end
 
@@ -43,13 +45,23 @@ class ItemTest < Minitest::Test
     assert_equal Time, @i.updated_at.class
   end
 
-  def test_merchant_id_returns_merchant_id
+  def test_merchant_returns_merchant_id
+    assert_equal 234252, @i.merchant_id
   end
 
   def test_unit_price_to_dollars_returns_price_as_float
     dollars = @i.unit_price_to_dollars
 
     assert_equal Float, dollars.class
+  end
+
+  def test_can_look_up_an_items_merchants_the_long_way
+    se = SalesEngine.from_csv({:items     => "../data/fixtures/item_stub.csv",
+                                :merchants => "../data/merchants.csv"})
+    item = se.items.find_by_id(263405233)
+    merchant_id = item.merchant.id
+
+    assert_equal 12334193, merchant_id
   end
 
 end

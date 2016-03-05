@@ -1,11 +1,18 @@
 class ItemRepository
 
-  def initialize(array_of_item_objects)
-    @items = array_of_item_objects
+  def initialize(item_array, sales_engine_instance = nil)
+    @items = create_items(item_array, sales_engine_instance)
+    @sales_engine_instance = sales_engine_instance
   end
 
   def inspect
     "ItemRepo with #{@items.count} Items"
+  end
+
+  def create_items(item_array, sales_engine_instance)
+    item_array.map do |hash_of_item_info|
+      Item.new(hash_of_item_info, sales_engine_instance)
+    end
   end
 
   def all
