@@ -40,12 +40,17 @@ class ItemRepositoryTest < Minitest::Test
     assert_equal 2, @item_repository.find_all_with_description("you").count
   end
 
-  def test_find_all_by_price_returns_an_empty_array_when_nothing_is_found
+  def test_find_all_by_description_returns_an_empty_array_when_nothing_is_found
     assert_equal [], @item_repository.find_all_with_description("ashwin")
   end
 
   def test_find_all_by_price_returns_an_item_when_price_matches
-    assert_equal "Pencil", @item_repository.find_all_by_price(1.99)[0].name
+    assert_equal "Googles", @item_repository.find_all_by_price(12.33)[0].name
+  end
+
+  def test_finds_item_by_price_within_a_range
+    range = Range.new(0.50, 15)
+    assert_equal 2, @item_repository.find_all_by_price_in_range(range).count
   end
 
   def test_find_all_by_price_in_range_returns_an_empty_array_when_nothing_is_found

@@ -10,9 +10,9 @@ class ItemTest < Minitest::Test
     @i = Item.new({
         :name        => "Pencil",
         :description => "You can use it to write things",
-        :unit_price  => BigDecimal.new(10.99,4),
-        :created_at  => Time.now,
-        :updated_at  => Time.now,
+        :unit_price  => BigDecimal.new(1099,4),
+        :created_at  => Time.now.to_s,
+        :updated_at  => Time.now.to_s,
       })
   end
 
@@ -32,7 +32,7 @@ class ItemTest < Minitest::Test
   end
 
   def test_unit_price_returns_big_decimal
-    assert_equal BigDecimal.new(10.99,4), @i.unit_price
+    assert_equal 10.99, @i.unit_price
   end
 
   def test_created_at_returns_time_of_creation

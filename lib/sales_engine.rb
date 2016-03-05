@@ -7,8 +7,6 @@ require_relative 'merchant_repository'
 
 class SalesEngine
 
-  attr_reader :sales_engine_hash
-
   def initialize(hash)
     @items = hash[:items]
     @merchants = hash[:merchants]
@@ -17,8 +15,8 @@ class SalesEngine
   def self.from_csv(hash)
     items_array = item_instance_maker(hash[:items])
     merchants_array = merchant_instance_maker(hash[:merchants])
-    @sales_engine_hash = {:items => items_array, :merchants => merchants_array}
-    SalesEngine.new(@sales_engine_hash)
+    sales_engine_hash = {:items => items_array, :merchants => merchants_array}
+    SalesEngine.new(sales_engine_hash)
   end
 
   def items
@@ -27,11 +25,6 @@ class SalesEngine
 
   def merchants
     MerchantRepository.new(@merchants)
-  end
-
-  def self.push_to_merchant_searcher(merchant_instance_id)
-    ItemsByMerchantSearcher.push_items(merchant_instance_id,
-                                       @sales_engine_hash[:items])
   end
 
   def self.item_instance_maker(items_filepath)

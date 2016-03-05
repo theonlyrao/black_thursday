@@ -4,6 +4,10 @@ class MerchantRepository
     @merchants = merchant_array
   end
 
+  def inspect
+    "MerchantRepo with #{@merchants.count} Merchants"
+  end
+
   def all
     @merchants
   end
@@ -22,7 +26,7 @@ class MerchantRepository
 
   def find_all_by_name(search_string)
     @merchants.find_all do |merchant|
-      merchant.name.include?(search_string)
+      merchant.name.downcase.include?(search_string)
     end
   end
 

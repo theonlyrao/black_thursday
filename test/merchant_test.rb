@@ -23,6 +23,7 @@ class MerchantTest < Minitest::Test
   end
 
   def test_can_look_up_a_merchants_items
+    skip
     se = SalesEngine.from_csv({
       :items     => "./data/items.csv",
       :merchants => "./data/merchants.csv",
