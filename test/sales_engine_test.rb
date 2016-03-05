@@ -26,5 +26,4 @@ class SalesEngineTest < Minitest::Test
   def test_magic_returns_an_array_populated_with_item_instances
     assert_equal "ItemRepo with 256 Items", @se.items.inspect
   end
-
 end

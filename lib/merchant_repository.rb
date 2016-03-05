@@ -5,7 +5,7 @@ class MerchantRepository
   end
 
   def inspect
-    "ItemRepo with #{@items.count} Items"
+    "MerchantRepo with #{@merchants.count} Merchants"
   end
 
   def all
