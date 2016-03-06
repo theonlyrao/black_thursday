@@ -23,11 +23,24 @@ class MerchantTest < Minitest::Test
   end
 
   def test_can_look_up_a_merchants_items
-    se = SalesEngine.from_csv({:items     => "../data/fixtures/item_stub.csv",
-                                :merchants => "../data/merchants.csv"})
+    se = SalesEngine.from_csv({:items     => "./data/fixtures/item_stub.csv",
+                                :merchants => "./data/merchants.csv"})
     merchant = se.merchants.find_by_id(12334195)
     merchant_items = merchant.items
 
     assert_equal 12, merchant_items.count
+  end
+
+  def test_can_look_up_merchants_invoices
+    se = SalesEngine.from_csv({:items => "./data/fixtures/item_stub.csv",
+                               :merchants => "./data/merchants.csv",
+                               :invoices => "./data/fixtures/invoice_stub.csv"
+                              })
+
+    merchant = se.merchants.find_by_id(12334986)
+    invoices = merchant.invoices
+
+    assert_equal 2, invoices.count
+    assert_equal Invoice, invoices.first.class
   end
 end

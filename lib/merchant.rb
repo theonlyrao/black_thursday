@@ -15,4 +15,8 @@ class Merchant
   def items
     @sales_engine_instance.items.find_all_by_merchant_id(self.id)
   end
+
+  def invoices
+    @sales_engine_instance.invoices.find_all_by_merchant_id(self.id)
+  end
 end

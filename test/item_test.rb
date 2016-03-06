@@ -56,8 +56,8 @@ class ItemTest < Minitest::Test
   end
 
   def test_can_look_up_an_items_merchants_the_long_way
-    se = SalesEngine.from_csv({:items     => "../data/fixtures/item_stub.csv",
-                                :merchants => "../data/merchants.csv"})
+    se = SalesEngine.from_csv({:items     => "./data/fixtures/item_stub.csv",
+                                :merchants => "./data/merchants.csv"})
     item = se.items.find_by_id(263405233)
     merchant_id = item.merchant.id
 
