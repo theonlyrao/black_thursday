@@ -7,8 +7,8 @@ require_relative '../lib/sales_engine'
 class SalesAnalystTest < Minitest::Test
 
   def setup
-    @se = SalesEngine.from_csv({:items     => "../data/fixtures/item_stub.csv",
-                                :merchants => "../data/merchants.csv"})
+    @se = SalesEngine.from_csv({:items     => "./data/fixtures/item_stub.csv",
+                                :merchants => "./data/merchants.csv"})
   end
 
   def test_analyst_created_with_instance_of_sales_engine
