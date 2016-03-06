@@ -1,12 +1,21 @@
 require 'pry'
 require 'bigdecimal'
+require 'time'
 require_relative 'average_num_of_things_methods'
 require_relative 'merchant_counts_methods'
+require_relative 'top_days_for_invoices'
 
 class SalesAnalyst
 
   include AverageNumOfThingsMethods
+  # avg num of things has methods relating to average items and
+  # invoices per merchant
+
   include MerchantCountsMethods
+  # merchant counts methods calculate which merchants have
+  # high or low numbers of items and invoices
+
+  include TopDaysForInvoices
 
   def initialize(sales_engine_instance)
     @sales_engine_instance = sales_engine_instance
@@ -84,6 +93,17 @@ class SalesAnalyst
       item.unit_price > high_price
     end
     golden_items
+  end
+
+  def invoice_status(status)
+    # get total number of invoices
+    total_invoices = @sales_engine_instance.invoices.all.count
+    # get number of invoices with relevant status
+    num_invoices_with_status = @sales_engine_instance.invoices.find_all_by_status(status).count
+
+    # divide relevant by total
+    invoice_status = BigDecimal(100 * num_invoices_with_status)/BigDecimal(total_invoices)
+    invoice_status.truncate(2).to_s("F").to_f
   end
 
 end

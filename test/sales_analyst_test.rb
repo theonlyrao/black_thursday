@@ -84,4 +84,49 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 12, sa.top_merchants_by_invoice_count.count
   end
 
+  def test_analyst_knows_bottom_merchants_by_invoice_count
+    sa = SalesAnalyst.new(@se)
+
+    assert_equal 12, sa.top_merchants_by_invoice_count.count
+  end
+
+  def test_analyst_knows_days_one_which_lots_of_invoices_created
+    sa = SalesAnalyst.new(@se)
+
+    assert_equal ["Friday"], sa.top_days_by_invoice_count
+  end
+
+  def test_analyst_knows_how_many_invoices_created_on_particular_day
+    sa = SalesAnalyst.new(@se)
+    date = Time.parse("2010-12-21")
+
+    assert_equal 1, sa.invoices_created_on_date(date)
+  end
+
+  def test_can_turn_date_into_day_of_week
+    sa = SalesAnalyst.new(@se)
+
+    date = Time.parse("2016-03-05")
+
+    assert_equal "Saturday", sa.turn_date_into_day_of_week(date)
+  end
+
+  def test_analyst_knows_percentage_invoices_that_are_pending
+    sa = SalesAnalyst.new(@se)
+
+    assert_equal 29.29, sa.invoice_status(:pending)
+  end
+
+  def test_analyst_knows_percentage_invoices_that_are_shipped
+    sa = SalesAnalyst.new(@se)
+
+    assert_equal 62.62, sa.invoice_status(:shipped)
+  end
+
+  def test_analyst_knows_percentage_invoices_that_are_returned
+    sa = SalesAnalyst.new(@se)
+
+    assert_equal 8.08, sa.invoice_status(:returned)
+  end
+
 end
