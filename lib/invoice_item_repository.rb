@@ -8,7 +8,7 @@ class InvoiceItemRepository
 
   attr_reader :sales_engine_instance
 
-  # include RepositoryMethods
+  include RepositoryMethods
 
   def initialize
   end
@@ -24,7 +24,7 @@ class InvoiceItemRepository
       invoice_item_repo.create_invoice_items(invoice_item_hash, sales_engine_instance)
       return invoice_item_repo
     else
-      create_invoice_items(invoice_item_hash, sales_engine_instance)
+      invoice_item_instance.create_invoice_items(invoice_item_hash, sales_engine_instance)
       return invoice_item_instance
     end
   end
@@ -44,9 +44,9 @@ class InvoiceItemRepository
     find_all_by_thing_id(item_id)
   end
 
-  def all
-    @things
-  end
+  # def all
+  #   @things
+  # end
 
 
 end
