@@ -120,7 +120,7 @@ class SalesAnalystTest < Minitest::Test
   def test_analyst_knows_percentage_invoices_that_are_shipped
     sa = SalesAnalyst.new(@se)
 
-    assert_equal 62.62, sa.invoice_status(:shipped)
+    assert_equal 62.63, sa.invoice_status(:shipped)
   end
 
   def test_analyst_knows_percentage_invoices_that_are_returned

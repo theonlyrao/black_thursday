@@ -102,8 +102,8 @@ class SalesAnalyst
     num_invoices_with_status = @sales_engine_instance.invoices.find_all_by_status(status).count
 
     # divide relevant by total
-    invoice_status = BigDecimal(100 * num_invoices_with_status)/BigDecimal(total_invoices)
-    invoice_status.truncate(2).to_s("F").to_f
+    invoice_status = (100 * num_invoices_with_status.to_f)/total_invoices.to_f
+    invoice_status.round(2)
   end
 
 end

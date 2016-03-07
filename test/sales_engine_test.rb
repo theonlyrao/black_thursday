@@ -17,6 +17,7 @@ class SalesEngineTest < Minitest::Test
   end
 
   def test_items_returns_instance_of_ItemRepository
+    skip
     assert_equal ItemRepository, @se.items.class
   end
 
@@ -25,6 +26,7 @@ class SalesEngineTest < Minitest::Test
   end
 
   def test_magic_returns_an_array_populated_with_item_instances
+    skip
     assert_equal "ItemRepo with 256 Items", @se.items.inspect
   end
 

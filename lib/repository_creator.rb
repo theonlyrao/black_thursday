@@ -7,7 +7,7 @@ class RepositoryCreator
   end
 
   def make_repository(filepath)
-    contents = CSV.open items_filepath, headers: true, header_converters: :symbol
+    contents = CSV.open filepath, headers: true, header_converters: :symbol
     things = []
     contents.each do |row|
       hash = Hash.new

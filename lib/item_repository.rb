@@ -9,6 +9,10 @@ class ItemRepository
     @sales_engine_instance = sales_engine_instance
   end
 
+  def self.send_csv_contents_to_repo(item_hash, sales_engine_instance)
+    ItemRepository.new(item_hash, sales_engine_instance)
+  end
+
   def inspect
     "ItemRepo with #{@things.count} Items"
   end
