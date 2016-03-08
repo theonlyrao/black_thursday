@@ -17,14 +17,14 @@ class CustomerRepository
     SalesEngine.from_csv(for_sales_engine, self)
   end
 
-  def self.send_csv_contents_to_repo(customer_hash, customer_instance, sales_engine_instance)
-    if customer_instance.nil?
+  def self.send_csv_contents_to_repo(customer_hash, customer_repo_instance, sales_engine_instance)
+    if customer_repo_instance.nil?
       customer_repo = CustomerRepository.new
       customer_repo.create_customers(customer_hash, sales_engine_instance)
       return customer_repo
     else
-      customer_instance.create_customers(customer_hash, sales_engine_instance)
-      return customer_instance
+      customer_repo_instance.create_customers(customer_hash, sales_engine_instance)
+      return customer_repo_instance
     end
   end
 
