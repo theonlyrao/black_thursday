@@ -1,6 +1,5 @@
 require 'pry'
 require_relative 'repository_methods'
-require_relative 'repository_creator'
 require_relative 'sales_engine'
 require_relative 'invoice_item'
 
@@ -39,14 +38,5 @@ class InvoiceItemRepository
       InvoiceItem.new(hash_of_invoice_item_info, sales_engine_instance)
     end
   end
-
-  def find_all_by_item_id(item_id)
-    find_all_by_thing_id(item_id)
-  end
-
-  # def all
-  #   @things
-  # end
-
 
 end

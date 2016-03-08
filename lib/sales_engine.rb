@@ -6,11 +6,12 @@ require_relative 'item_repository'
 require_relative 'merchant_repository'
 require_relative 'invoice_repository'
 require_relative 'invoice_item_repository'
+require_relative 'transaction_repository'
+require_relative 'customer_repository'
 
 class SalesEngine
 
-  attr_reader :items, :merchants, :invoices, :invoice_items
-
+  attr_reader :items, :merchants, :invoices, :invoice_items, :transactions, :customers
   def initialize(array, repo)
     array.each do |type, hash|
       if type == :items
@@ -25,6 +26,12 @@ class SalesEngine
       end
       if type == :invoice_items
         @invoice_items = InvoiceItemRepository.send_csv_contents_to_repo(hash, repo, self)
+      end
+      if type == :transactions
+        @transactions = TransactionRepository.send_csv_contents_to_repo(hash, repo, self)
+      end
+      if type == :customers
+        @customers = CustomerRepository.send_csv_contents_to_repo(hash, repo, self)
       end
     end
   end
