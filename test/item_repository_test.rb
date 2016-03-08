@@ -1,12 +1,20 @@
 require_relative 'test_helper'
 require 'minitest/autorun'
 require_relative '../lib/item_repository'
+require_relative '../lib/sales_engine'
 
 class ItemRepositoryTest < Minitest::Test
   def setup
     @test_helper = TestHelper.new
     @items = @test_helper.array_of_items
     @item_repository = ItemRepository.new(@items)
+  end
+
+  def test_can_create_repo_from_sales_engine
+    se = SalesEngine.from_csv({:items     => "./data/fixtures/item_stub.csv"})
+
+    assert_equal ItemRepository, se.items.class
+    assert_equal "ItemRepo with 256 Items", se.items.inspect
   end
 
   def test_all_returns_array_of_item_instances
