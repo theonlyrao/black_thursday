@@ -117,7 +117,7 @@ class InvoiceTest < Minitest::Test
 
     invoice = se.invoices.find_by_id(4126)
 
-    assert_equal false, invoice.is_paid_in_full?
+    assert_equal true, invoice.is_paid_in_full?
   end
 
   def test_total_knows_total_amount_of_invoice
@@ -131,8 +131,8 @@ class InvoiceTest < Minitest::Test
     })
 
     invoice = se.invoices.find_by_id(3)
-    invoice_total = invoice.total
+    invoice_total = invoice.total.round
 
-    assert_equal 301.59, invoice_total
+    assert_equal BigDecimal("30159"), invoice_total
   end
 end

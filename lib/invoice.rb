@@ -50,23 +50,10 @@ class Invoice
   end
 
   def is_paid_in_full?
-    # transactions = @sales_engine_instance.transactions.find_all_by_invoice_id(self.id)
-    # results = transactions.map do |transaction|
-    #   true if transaction.result == "success"
-    # end
-    #
-    # if results.all? { |result| result == true }
-    #   true
-    # else
-    #   false
-    # end
-
-    # if self.status != :shipped
-    #   false
-    # else
-    #   true
-    # end
-    false
+    transactions = @sales_engine_instance.transactions.find_all_by_invoice_id(self.id)
+    transactions.any? do |transaction|
+      transaction.result == "success"
+    end
   end
 
   def total
@@ -77,7 +64,7 @@ class Invoice
     current_invoice_items = @sales_engine_instance.invoice_items.find_all_by_invoice_id(self.id)
 
     total = current_invoice_items.map do |invoice_item|
-      (invoice_item.quantity * invoice_item.unit_price_to_dollars)
+      (invoice_item.quantity * invoice_item.unit_price)
     end.reduce(:+).round(2)
 
     total
