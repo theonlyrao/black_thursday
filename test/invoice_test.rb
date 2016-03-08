@@ -70,15 +70,18 @@ class InvoiceTest < Minitest::Test
     invoice = se.invoices.find_by_id(20)
     items = invoice.items
 
-    assert_equal Item, items.first.first.class
+    assert_equal Item, items[2].class
   end
 
   def test_invoices_know_its_transaction
-    skip
-    se = SalesEngine.from_csv({:items => "./data/fixtures/item_stub.csv",
-                               :merchants => "./data/merchants.csv",
-                               :invoices => "./data/fixtures/invoice_stub.csv"
-                              })
+    se = SalesEngine.from_csv({
+      :items => "./data/fixtures/item_stub.csv",
+      :merchants => "./data/merchants.csv",
+      :invoices => "./data/fixtures/invoice_stub.csv",
+      :invoice_items => "./data/fixtures/invoice_items_stub.csv",
+      :transactions => "./data/fixtures/transaction_stub.csv",
+      :customers => "./data/customers.csv"
+    })
 
     invoice = se.invoices.find_by_id(20)
     transactions = invoice.transactions
@@ -87,15 +90,49 @@ class InvoiceTest < Minitest::Test
   end
 
   def test_invoices_know_its_customers
-    skip
-    se = SalesEngine.from_csv({:items => "./data/fixtures/item_stub.csv",
-                               :merchants => "./data/merchants.csv",
-                               :invoices => "./data/fixtures/invoice_stub.csv"
-                              })
+    se = SalesEngine.from_csv({
+      :items => "./data/fixtures/item_stub.csv",
+      :merchants => "./data/merchants.csv",
+      :invoices => "./data/fixtures/invoice_stub.csv",
+      :invoice_items => "./data/fixtures/invoice_items_stub.csv",
+      :transactions => "./data/fixtures/transaction_stub.csv",
+      :customers => "./data/customers.csv"
+    })
 
     invoice = se.invoices.find_by_id(20)
     customer = invoice.customer
 
-    assert_equal [], customer
+    assert_equal "Nader", customer.last_name
+  end
+
+  def test_invoice_knows_if_it_is_paid_in_full
+    se = SalesEngine.from_csv({
+      :items => "./data/fixtures/item_stub.csv",
+      :merchants => "./data/merchants.csv",
+      :invoices => "./data/invoices.csv",
+      :invoice_items => "./data/fixtures/invoice_items_stub.csv",
+      :transactions => "./data/fixtures/transaction_stub.csv",
+      :customers => "./data/customers.csv"
+    })
+
+    invoice = se.invoices.find_by_id(4126)
+
+    assert_equal false, invoice.is_paid_in_full?
+  end
+
+  def test_total_knows_total_amount_of_invoice
+    se = SalesEngine.from_csv({
+      :items => "./data/fixtures/item_stub.csv",
+      :merchants => "./data/merchants.csv",
+      :invoices => "./data/invoices.csv",
+      :invoice_items => "./data/fixtures/invoice_items_stub.csv",
+      :transactions => "./data/fixtures/transaction_stub.csv",
+      :customers => "./data/customers.csv"
+    })
+
+    invoice = se.invoices.find_by_id(3)
+    invoice_total = invoice.total
+
+    assert_equal 301.59, invoice_total
   end
 end

@@ -29,7 +29,7 @@ class CustomerRepository
   end
 
   def inspect
-    "InvoiceItemRepo with #{@things.count} InvoiceItems"
+    "CustomerRepo with #{@things.count} Customers"
   end
 
   def create_customers(customer_array, sales_engine_instance)

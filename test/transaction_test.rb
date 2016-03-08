@@ -1,5 +1,6 @@
 require 'minitest/autorun'
 require_relative '../lib/transaction'
+require_relative '../lib/sales_engine'
 
 class TransactionTest < Minitest::Test
 
@@ -14,6 +15,23 @@ class TransactionTest < Minitest::Test
                         })
 
     assert_equal Transaction, t.class
+  end
+
+  def test_transaction_knows_its_invoices
+    se = SalesEngine.from_csv({
+        :items => "./data/items.csv",
+        :merchants => "./data/merchants.csv",
+        :invoices => "./data/invoices.csv",
+        :invoice_items => "./data/invoice_items.csv",
+        :transactions => "./data/transactions.csv",
+        :customers => "./data/customers.csv"
+      })
+
+      transaction = se.transactions.find_by_id(40)
+
+      invoice = transaction.invoice
+
+      assert_equal 14, invoice.id
   end
 
 end

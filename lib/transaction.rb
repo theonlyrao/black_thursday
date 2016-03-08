@@ -23,4 +23,11 @@ class Transaction
     @sales_engine_instance = sales_engine_instance
   end
 
+  def invoice
+    invoice_id = self.invoice_id
+
+    invoice = @sales_engine_instance.invoices.find_by_id(invoice_id)
+    invoice
+  end
+
 end

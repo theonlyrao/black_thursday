@@ -43,4 +43,20 @@ class MerchantTest < Minitest::Test
     assert_equal 2, invoices.count
     assert_equal Invoice, invoices.first.class
   end
+
+  def test_merchants_know_their_customers
+    se = SalesEngine.from_csv({
+      :items => "./data/fixtures/item_stub.csv",
+      :merchants => "./data/merchants.csv",
+      :invoices => "./data/fixtures/invoice_stub.csv",
+      :invoice_items => "./data/fixtures/invoice_items_stub.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
+    })
+
+    merchant = se.merchants.find_by_id(12335545)
+    customers = merchant.customers
+
+    assert_equal [], customers
+  end
 end
