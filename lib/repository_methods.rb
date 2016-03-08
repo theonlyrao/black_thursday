@@ -12,6 +12,12 @@ module RepositoryMethods
       end
     end
 
+    def find_all_by_id(id)
+      @things.find_all do |thing|
+        thing.id == id
+      end
+    end
+
     def find_by_name(name)
       @things.find do |thing|
         thing.name == name

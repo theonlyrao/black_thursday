@@ -24,4 +24,23 @@ class Invoice
     @sales_engine_instance.merchants.find_by_id(self.merchant_id)
   end
 
+  def transactions
+  end
+
+  def items
+    # take my self.id (invoices) and go to invoice_item_repository
+      # this method is written in repo methods
+      # find all invoice_items instances that have this invoice id
+    # current_invoice_item = @sales_engine_instance.invoice_items.find_all_by_invoice_id(self.id)
+    item_ids = @sales_engine_instance.invoice_items.map do |invoice_item|
+      invoice_item.item_id if invoice_item.invoice_id == self.id
+    end
+
+    items = item_ids.map do |item_id|
+      @sales_engine_instance.items.find_all_by_id(item_id)
+    end
+    items
+    binding.pry
+  end
+
 end
