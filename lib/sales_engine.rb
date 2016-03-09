@@ -11,7 +11,13 @@ require_relative 'customer_repository'
 
 class SalesEngine
 
-  attr_reader :items, :merchants, :invoices, :invoice_items, :transactions, :customers
+  attr_reader :items,
+              :merchants,
+              :invoices,
+              :invoice_items,
+              :transactions,
+              :customers
+
   def initialize(array, repo)
     array.each do |type, hash|
       if type == :items

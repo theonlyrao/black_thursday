@@ -8,18 +8,18 @@ module TopDaysForInvoices
 
     # pairing dates with number of invoices created on that date
     # in an array element
-    array_of_dates_and_num_invoices = all_dates.map do |date|
+    dates_and_num_invoices = all_dates.map do |date|
       [date, invoices_created_on_date(date)]
     end
 
     # turing the dates in the array into days of week
-    array_of_days_and_num_invoices = array_of_dates_and_num_invoices.map do |date, num|
+    days_and_num_invoices = dates_and_num_invoices.map do |date, num|
       [turn_date_into_day_of_week(date), num]
     end
 
     # get the hash thing with day as key and total invoices as value
     days_hash = Hash.new
-    array_of_days_and_num_invoices.each do |day, num|
+    days_and_num_invoices.each do |day, num|
       if days_hash.keys.include?(day)
         days_hash[day] += num
       else
@@ -55,11 +55,12 @@ module TopDaysForInvoices
   end
 
   def invoices_created_on_date(date)
-    invoices_created_on_the_day = @sales_engine_instance.invoices.all.find_all do |invoice|
+    invoices = @sales_engine_instance.invoices
+    days_invoices = invoices.all.find_all do |invoice|
       invoice.created_at == date
     end
 
-    num_invoices_created_on_date = invoices_created_on_the_day.count
+    num_invoices_created_on_date = days_invoices.count
     num_invoices_created_on_date
   end
 

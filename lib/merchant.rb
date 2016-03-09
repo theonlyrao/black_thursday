@@ -21,9 +21,10 @@ class Merchant
   end
 
   def customers
-    current_invoices = @sales_engine_instance.invoices.find_all_by_merchant_id(self.id)
+    invoices = @sales_engine_instance.invoices
+    result_inv = invoices.find_all_by_merchant_id(self.id)
 
-    customer_ids = current_invoices.map do |invoice|
+    customer_ids = result_inv.map do |invoice|
       invoice.customer_id
     end.uniq
 

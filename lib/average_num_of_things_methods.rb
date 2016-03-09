@@ -11,8 +11,7 @@ module AverageNumOfThingsMethods
 
       total_merchants = @sales_engine_instance.merchants.all.count.to_f
 
-      average_things_per_merchant = BigDecimal.new(total_things/total_merchants, digits).to_f
-      average_things_per_merchant
+      BigDecimal.new(total_things/total_merchants, digits).to_f
     end
 
     def average_invoices_per_merchant
@@ -25,16 +24,16 @@ module AverageNumOfThingsMethods
 
     def average_num_of_things_per_merchant_standard_deviation(thing)
       if thing == :invoices
-        num_things_per_merchant = @sales_engine_instance.merchants.all.map do |merchant|
+        merchant_things = @sales_engine_instance.merchants.all.map do |merchant|
           merchant.invoices.count
         end
       else
-        num_things_per_merchant = @sales_engine_instance.merchants.all.map do |merchant|
+        merchant_things = @sales_engine_instance.merchants.all.map do |merchant|
           merchant.items.count
         end
       end
 
-      differences = num_things_per_merchant.map do |num_items|
+      differences = merchant_things.map do |num_items|
         num_items - average_num_of_things_per_merchant(thing)
       end
 
