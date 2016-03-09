@@ -9,9 +9,13 @@ module MerchantCountsMethods
         deviations = 1
       end
 
-      relevant_num_of_things = average_num_of_things_per_merchant(thing) + (average_num_of_things_per_merchant_standard_deviation(thing) * deviations)
+      average = average_num_of_things_per_merchant(thing)
+      d = average_num_of_things_per_merchant_standard_deviation(thing)
+      adj_deviation = d * deviations
+      relevant_num_of_things = average + adj_deviation
 
-      merchants_by_thing_count_hash = @sales_engine_instance.merchants.all.group_by do |merchant|
+      merchants = @sales_engine_instance.merchants
+      merchants_and_count = merchants.all.group_by do |merchant|
         if thing == :invoices
           merchant.invoices.count
         else
@@ -19,7 +23,7 @@ module MerchantCountsMethods
         end
       end
 
-      almost_there_array = merchants_by_thing_count_hash.find_all do |key, value|
+      results = merchants_and_count.find_all do |key, value|
         if high_or_low == :high
           value if key > relevant_num_of_things
         else
@@ -27,7 +31,7 @@ module MerchantCountsMethods
         end
       end.flatten
 
-      merchants_with_particular_count_of_things = almost_there_array.partition do |element|
+      merchants_with_particular_count_of_things = results.partition do |element|
         element.class == Merchant
       end.first
     end

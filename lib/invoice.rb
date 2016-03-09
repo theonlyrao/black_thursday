@@ -25,14 +25,15 @@ class Invoice
   end
 
   def transactions
-    transactions = @sales_engine_instance.transactions.find_all_by_invoice_id(self.id)
+    @sales_engine_instance.transactions.find_all_by_invoice_id(self.id)
   end
 
   def items
     # find all invoice items that contains this invoice number
-    current_invoice_items = @sales_engine_instance.invoice_items.find_all_by_invoice_id(self.id)
+    invoice_items = @sales_engine_instance.invoice_items
+    result_inv_items = invoice_items.find_all_by_invoice_id(self.id)
     # in each of those invoice items get the item number
-    item_ids = current_invoice_items.map do |invoice_item|
+    item_ids = result_inv_items.map do |invoice_item|
       invoice_item.item_id
     end
 
@@ -50,8 +51,8 @@ class Invoice
   end
 
   def is_paid_in_full?
-    transactions = @sales_engine_instance.transactions.find_all_by_invoice_id(self.id)
-    transactions.any? do |transaction|
+    t = @sales_engine_instance.transactions.find_all_by_invoice_id(self.id)
+    t.any? do |transaction|
       transaction.result == "success"
     end
   end
@@ -61,9 +62,10 @@ class Invoice
     # so find all invoice_items that have self.id = invoice_id
     # then map over invoice_items and multiply quantity * unit_price_to_dollars
     # then reduce
-    current_invoice_items = @sales_engine_instance.invoice_items.find_all_by_invoice_id(self.id)
+    invoice_items = @sales_engine_instance.invoice_items
+    result_inv_items = invoice_items.find_all_by_invoice_id(self.id)
 
-    total = current_invoice_items.map do |invoice_item|
+    total = result_inv_items.map do |invoice_item|
       (invoice_item.quantity * invoice_item.unit_price)
     end.reduce(:+).round(2)
 

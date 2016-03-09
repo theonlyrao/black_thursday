@@ -31,7 +31,7 @@ class SalesAnalyst
     end.reduce(:+).to_f
 
     num_merchants_items = merchants_items.count.to_f
-    average_item_price_for_merchant = BigDecimal(sum_of_prices_of_all_merchants_items/num_merchants_items, 4)
+    BigDecimal(sum_of_prices_of_all_merchants_items/num_merchants_items, 4)
   end
 
   def average_average_price_per_merchant
@@ -40,7 +40,7 @@ class SalesAnalyst
       merchant.id
     end
 
-    total_number_merchants = BigDecimal(@sales_engine_instance.merchants.all.count)
+    merchant_count = BigDecimal(@sales_engine_instance.merchants.all.count)
 
     average_item_price_per_merchant = all_merchant_ids.map do |id|
       if @sales_engine_instance.merchants.find_by_id(id).items.count > 0
@@ -51,18 +51,17 @@ class SalesAnalyst
       result
     end.reduce(:+)
 
-    average_average_price_per_merchant = average_item_price_per_merchant/total_number_merchants
-    average_average_price_per_merchant.truncate(2)
+    answer = average_item_price_per_merchant/merchant_count
+    answer.truncate(2)
   end
 
   def average_price_per_item
     total_items = @sales_engine_instance.items.all.count.to_f
-    total_of_prices_of_all_items = @sales_engine_instance.items.all.map do |item|
+    total_of_all_items = @sales_engine_instance.items.all.map do |item|
       item.unit_price
     end.reduce(:+)
 
-    average_price_per_item = BigDecimal.new(total_of_prices_of_all_items/total_items, 3).to_f
-    average_price_per_item
+    BigDecimal.new(total_of_all_items/total_items, 3).to_f
   end
 
   def average_price_per_item_standard_deviation
@@ -88,7 +87,9 @@ class SalesAnalyst
   end
 
   def golden_items
-    high_price = average_price_per_item + (2 * average_price_per_item_standard_deviation)
+    average = average_price_per_item
+    deviation = (2 * average_price_per_item_standard_deviation)
+    high_price = average + deviation
     golden_items = @sales_engine_instance.items.all.find_all do |item|
       item.unit_price > high_price
     end
@@ -97,12 +98,13 @@ class SalesAnalyst
 
   def invoice_status(status)
     # get total number of invoices
-    total_invoices = @sales_engine_instance.invoices.all.count
+    invoices = @sales_engine_instance.invoices
+    total_invoices = invoices.all.count
     # get number of invoices with relevant status
-    num_invoices_with_status = @sales_engine_instance.invoices.find_all_by_status(status).count
+    num_invoices = invoices.find_all_by_status(status).count
 
     # divide relevant by total
-    invoice_status = (100 * num_invoices_with_status.to_f)/total_invoices.to_f
+    invoice_status = (100 * num_invoices.to_f)/total_invoices.to_f
     invoice_status.round(2)
   end
 
