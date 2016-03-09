@@ -58,10 +58,6 @@ class Invoice
   end
 
   def total
-    #invoice item has quantity and unit_price of each item on the invoice
-    # so find all invoice_items that have self.id = invoice_id
-    # then map over invoice_items and multiply quantity * unit_price_to_dollars
-    # then reduce
     invoice_items = @sales_engine_instance.invoice_items
     result_inv_items = invoice_items.find_all_by_invoice_id(self.id)
 

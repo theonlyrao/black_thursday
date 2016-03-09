@@ -4,6 +4,8 @@ require_relative 'repository_methods'
 
 class InvoiceRepository
 
+  attr_reader :things
+
   include RepositoryMethods
 
   def initialize
