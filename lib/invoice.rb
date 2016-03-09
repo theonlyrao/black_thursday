@@ -29,10 +29,9 @@ class Invoice
   end
 
   def items
-    # find all invoice items that contains this invoice number
     invoice_items = @sales_engine_instance.invoice_items
     result_inv_items = invoice_items.find_all_by_invoice_id(self.id)
-    # in each of those invoice items get the item number
+
     item_ids = result_inv_items.map do |invoice_item|
       invoice_item.item_id
     end
@@ -40,7 +39,6 @@ class Invoice
     items = item_ids.map do |item_id|
       @sales_engine_instance.items.find_by_id(item_id)
     end
-    # go to item repo and get each of those item instances
   end
 
   def customer

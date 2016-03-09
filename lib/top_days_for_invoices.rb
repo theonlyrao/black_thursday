@@ -32,18 +32,10 @@ module TopDaysForInvoices
     avg_invoices_per_day = days_hash.values.reduce(:+)/7
 
     # now find standard deviation
-    differences = days_hash.values.map do |num_invoices|
-      num_invoices - avg_invoices_per_day
-    end
+    sd = standard_deviation(days_hash.values, avg_invoices_per_day)
 
-    square_diff = differences.map { |difference| difference ** 2}
-    sum_of_squares = square_diff.reduce(:+)
-
-    raw_standard_deviation = Math.sqrt(sum_of_squares/6)
-    standard_deviation = BigDecimal.new(raw_standard_deviation, 4)
-
-    # now figure out the cutoff
-    high_invoices = avg_invoices_per_day + standard_deviation
+    # find the cutoff for high
+    high_invoices = avg_invoices_per_day + sd
 
     # now find the days
     top_days_by_invoice_count = []
