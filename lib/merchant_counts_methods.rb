@@ -1,5 +1,17 @@
 module MerchantCountsMethods
 
+    def top_merchants_by_invoice_count
+      merchants_with_particular_count_of_things(:invoices, :high)
+    end
+
+    def merchants_with_high_item_count
+      merchants_with_particular_count_of_things(:items, :high)
+    end
+
+    def bottom_merchants_by_invoice_count
+      merchants_with_particular_count_of_things(:invoices, :low)
+    end
+
     def merchants_with_particular_count_of_things(thing, high_or_low = :high)
       if thing == :invoices && high_or_low == :high
         deviations = 2
@@ -34,18 +46,6 @@ module MerchantCountsMethods
       merchants_with_particular_count_of_things = results.partition do |element|
         element.class == Merchant
       end.first
-    end
-
-    def top_merchants_by_invoice_count
-      merchants_with_particular_count_of_things(:invoices, :high)
-    end
-
-    def merchants_with_high_item_count
-      merchants_with_particular_count_of_things(:items, :high)
-    end
-
-    def bottom_merchants_by_invoice_count
-      merchants_with_particular_count_of_things(:invoices, :low)
     end
 
 end
