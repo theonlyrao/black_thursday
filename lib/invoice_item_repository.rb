@@ -12,30 +12,25 @@ class InvoiceItemRepository
   def initialize
   end
 
-  def from_csv(filepath)
-    for_sales_engine = { invoice_items: filepath }
-    SalesEngine.from_csv(for_sales_engine, self)
-  end
-
-  def self.send_csv_contents_to_repo(invoice_item_hash, invoice_item_instance, sales_engine_instance)
-    if invoice_item_instance.nil?
-      invoice_item_repo = InvoiceItemRepository.new
-      invoice_item_repo.create_invoice_items(invoice_item_hash, sales_engine_instance)
-      return invoice_item_repo
-    else
-      invoice_item_instance.create_invoice_items(invoice_item_hash, sales_engine_instance)
-      return invoice_item_instance
-    end
-  end
-
   def inspect
     "InvoiceItemRepo with #{@things.count} InvoiceItems"
   end
 
-  def create_invoice_items(invoice_item_array, sales_engine_instance)
+  def from_csv(filepath)
+    contents = CSV.open filepath, headers: true, header_converters: :symbol
+    invoice_items = contents.map do |row|
+      row.to_h
+    end
+    create_invoice_item_items(invoice_items)
+  end
+
+  def create_invoice_item_items(invoice_item_array, sales_engine_instance = nil)
     @sales_engine_instance = sales_engine_instance
     @things = invoice_item_array.map do |hash_of_invoice_item_info|
       InvoiceItem.new(hash_of_invoice_item_info, sales_engine_instance)
+    end
+    unless @sales_engine_instance.nil?
+      @sales_engine_instance.invoice_items = self
     end
   end
 

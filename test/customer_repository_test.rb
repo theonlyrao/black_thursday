@@ -19,12 +19,6 @@ class CustomerRepositoryTest < Minitest::Test
     refute repo.sales_engine_instance
   end
 
-  def test_this_repo_does_know_se_after_from_csv
-    engine = @cr.sales_engine_instance
-
-    assert_equal SalesEngine, engine.class
-  end
-
   def test_all_returns_all_customer_instances
     all_test = @cr.all
 

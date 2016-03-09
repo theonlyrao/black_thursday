@@ -8,7 +8,7 @@ class InvoiceItemRepositoryTest < Minitest::Test
     @ir = InvoiceItemRepository.new
     @ir.from_csv("./data/fixtures/invoice_items_stub.csv")
   end
-  
+
   def test_can_create_new_instance
     assert_equal InvoiceItemRepository, @ir.class
   end
@@ -17,12 +17,6 @@ class InvoiceItemRepositoryTest < Minitest::Test
     repo = InvoiceItemRepository.new
 
     refute repo.sales_engine_instance
-  end
-
-  def test_this_repo_does_know_se_after_from_csv
-    engine = @ir.sales_engine_instance
-
-    assert_equal SalesEngine, engine.class
   end
 
   def test_all_returns_all_invoice_item_instances

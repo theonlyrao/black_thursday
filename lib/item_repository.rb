@@ -4,22 +4,29 @@ class ItemRepository
 
   include RepositoryMethods
 
-  def initialize(item_array, sales_engine_instance = nil)
-    @things = create_items(item_array, sales_engine_instance)
-    @sales_engine_instance = sales_engine_instance
-  end
-
-  def self.send_csv_contents_to_repo(item_hash, sales_engine_instance)
-    ItemRepository.new(item_hash, sales_engine_instance)
+  def initialize
+    @things = []
   end
 
   def inspect
     "ItemRepo with #{@things.count} Items"
   end
 
-  def create_items(item_array, sales_engine_instance)
-    item_array.map do |hash_of_item_info|
+  def from_csv(filepath)
+    contents = CSV.open filepath, headers: true, header_converters: :symbol
+    items = contents.map do |row|
+      row.to_h
+    end
+    create_item_items(items)
+  end
+
+  def create_item_items(item_array, sales_engine_instance = nil)
+    @sales_engine_instance = sales_engine_instance
+    @things = item_array.map do |hash_of_item_info|
       Item.new(hash_of_item_info, sales_engine_instance)
+    end
+    unless @sales_engine_instance == nil
+      @sales_engine_instance.items = self
     end
   end
 
