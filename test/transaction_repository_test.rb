@@ -19,12 +19,6 @@ class TransactionRepositoryTest < Minitest::Test
     refute repo.sales_engine_instance
   end
 
-  def test_this_repo_does_know_se_after_from_csv
-    engine = @tr.sales_engine_instance
-
-    assert_equal SalesEngine, engine.class
-  end
-
   def test_all_returns_all_invoice_item_instances
     all_test = @tr.all
 
