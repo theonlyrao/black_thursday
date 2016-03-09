@@ -8,6 +8,13 @@ class InvoiceRepositoryTest < Minitest::Test
     @se = SalesEngine.from_csv({:invoices => "./data/fixtures/invoice_stub.csv"})
   end
 
+  def test_from_csv
+    invoice_repo = InvoiceRepository.new
+    invoice_repo.from_csv("./data/fixtures/invoice_stub.csv")
+
+    assert_equal Invoice, invoice_repo.things.first.class
+  end
+
   def test_all_returns_array_of_all_invoice_instances
     invoice_array = @se.invoices.all
 
