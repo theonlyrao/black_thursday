@@ -1,5 +1,6 @@
 require 'pry'
 require 'csv'
+require_relative 'loader'
 require_relative 'merchant'
 require_relative 'item'
 require_relative 'item_repository'
@@ -12,14 +13,19 @@ require_relative 'customer_repository'
 class SalesEngine
 
   attr_accessor :items,
-              :merchants,
-              :invoices,
-              :invoice_items,
-              :transactions,
-              :customers
+                :merchants,
+                :invoices,
+                :invoice_items,
+                :transactions,
+                :customers
 
   def initialize(hash)
+    @items = []
+    @merchants = []
+    @invoices = []
+    @invoice_items = []
     @transactions = []
+    @customers = []
     Loader.new(self, hash)
   end
 

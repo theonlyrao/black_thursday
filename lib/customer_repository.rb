@@ -10,32 +10,28 @@ class CustomerRepository
   include RepositoryMethods
 
   def initialize
+    @things = []
   end
 
   def from_csv(filepath)
-    for_sales_engine = { customers: filepath }
-    SalesEngine.from_csv(for_sales_engine, self)
-  end
-
-  def self.send_csv_contents_to_repo(customer_hash, customer_repo_instance, sales_engine_instance)
-    if customer_repo_instance.nil?
-      customer_repo = CustomerRepository.new
-      customer_repo.create_customers(customer_hash, sales_engine_instance)
-      return customer_repo
-    else
-      customer_repo_instance.create_customers(customer_hash, sales_engine_instance)
-      return customer_repo_instance
+    contents = CSV.open filepath, headers: true, header_converters: :symbol
+    customers = contents.map do |row|
+      row.to_h
     end
+    create_customer_items(customers)
   end
 
   def inspect
     "CustomerRepo with #{@things.count} Customers"
   end
 
-  def create_customers(customer_array, sales_engine_instance)
+  def create_customer_items(customer_array, sales_engine_instance = nil)
     @sales_engine_instance = sales_engine_instance
     @things = customer_array.map do |hash_of_customer_info|
       Customer.new(hash_of_customer_info, sales_engine_instance)
+    end
+    unless @sales_engine_instance.nil?
+      @sales_engine_instance.customers = self
     end
   end
 
